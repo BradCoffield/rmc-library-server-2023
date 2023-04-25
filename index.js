@@ -1,4 +1,5 @@
 import express from 'express';
+import probe from "probe-image-size";
 const app = express();
 
 app.use((req, res, next) => {
@@ -18,7 +19,7 @@ app.get("/json", (req, res) => {
 
 
 app.get("/new-books-api", (req, res) => {
-  let probe = require("probe-image-size");
+ 
 
   // const apiUrl = `https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,oxford&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&tab=LibraryCatalog&limit=150&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks`;
   const apiUrl = `
