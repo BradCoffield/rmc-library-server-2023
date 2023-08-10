@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config();
-const compression = require("compression");
+import compression from "compression";
 import express from "express";
 import probe from "probe-image-size";
 const app = express();
@@ -81,8 +81,8 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
   // res.send("Successful response.");
 });
 app.get("/new-books-api-and-send-to-sanity", (req, res) => {
-  const apiUrl = `
-https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,new%20books&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=50`;
+const apiUrl = `
+https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=150`;
   fetch(apiUrl)
     .then((resp) => resp.json())
     .then(async function (result) {
