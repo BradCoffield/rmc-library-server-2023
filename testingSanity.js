@@ -20,7 +20,10 @@ const sanityClient = createClient({
 // }
 // getPosts()
 
-// use GROQ to clear out all content from new books in sanity
+
+/* 
+use GROQ to clear out all content from "new books" in sanity
+*/
  
 // sanityClient
 //   .delete({query: '*[_type == "newBooks"]'})
@@ -32,6 +35,10 @@ const sanityClient = createClient({
 //   })
  
  
+
+/* 
+I don't remember why this is here.
+*/
 
 
 // result.forEach((book) => {
