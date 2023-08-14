@@ -44,7 +44,8 @@ app.get("/", (req, res) => {
 app.get("/new-books-api", (req, res) => {
   const apiUrl = `
 https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=150`;
-// https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,new%20books&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=50`;
+  // https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,new%20books&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=50`;
+  console.log(`Fetching:  ${apiUrl}`);
   fetch(apiUrl)
     .then((resp) => resp.json())
     .then(async function (result) {
@@ -54,14 +55,15 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
       // res.send(realResults)
       let toSend = [];
 
+      console.log("Investigating cover images for the book results.");
       for (let i = 0; i < realResults.length; i++) {
         if (realResults[i].pnx.addata.isbn) {
           let tempEh = await probe(
             `https://syndetics.com/index.aspx?isbn=${realResults[i].pnx.addata.isbn[0]}/MC.JPG&client=primo`
           );
-          console.log("here1");
+          // console.log("here1");
           if (tempEh.width > 1) {
-            console.log("cover image present");
+            // console.log("cover image present");
             toSend.push({
               isbn: realResults[i].pnx.addata.isbn,
               title: realResults[i].pnx.display.title,
@@ -72,7 +74,7 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
               primoPermalink: `https://trails-rocky.primo.exlibrisgroup.com/permalink/01TRAILS_ROCKY/1k8hqrr/${realResults[i].pnx.control.recordid}`,
             });
           }
-          else {console.log("cover image not present")}
+          // else {console.log("cover image not present")}
         }
       }
       console.log("Results length:", toSend.length);
@@ -81,7 +83,7 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
   // res.send("Successful response.");
 });
 app.get("/new-books-api-and-send-to-sanity", (req, res) => {
-const apiUrl = `
+  const apiUrl = `
 https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks&limit=150`;
   fetch(apiUrl)
     .then((resp) => resp.json())
@@ -97,9 +99,9 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
           let tempEh = await probe(
             `https://syndetics.com/index.aspx?isbn=${realResults[i].pnx.addata.isbn[0]}/MC.JPG&client=primo`
           );
-          console.log("here1");
+          // console.log("here1");
           if (tempEh.width > 1) {
-            console.log("here2");
+            console.log("cover image present");
             toSend.push({
               isbn: realResults[i].pnx.addata.isbn,
               title: realResults[i].pnx.display.title,
