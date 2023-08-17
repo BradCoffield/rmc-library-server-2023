@@ -80,9 +80,9 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
         }
       }
       console.log("Results length:", toSend.length);
-       const msElapsed = Date.now() - startTime;
-       console.log(`This all took ${msElapsed / 1000} seconds to complete.`);
-       res.send(toSend);
+      const msElapsed = Date.now() - startTime;
+      console.log(`This all took ${msElapsed / 1000} seconds to complete.`);
+      res.send(toSend);
     });
   // res.send("Successful response.");
 });
@@ -137,24 +137,19 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
             console.log(`New book was created, document ID is ${res._id}`);
           });
         });
-          const msElapsed = Date.now() - startTime;
-          console.log(`This all took ${msElapsed / 1000} seconds to complete.`);
-  
+        const msElapsed = Date.now() - startTime;
+        console.log(`This all took ${msElapsed / 1000} seconds to complete.`);
+
         res.send(ids);
       } else res.send("Primo results empty so no data sent to Sanity.");
     });
   // res.send("Successful response.");
 });
 app.get("/new-books-api-and-pqueue-send-to-sanity", (req, res) => {
- 
   const queue = new PQueue({
     concurrency: 5,
     interval: 1000 / 25,
   });
-  // queue.on("completed", (result) => {
-  //   console.log("Q completed");
-  //   console.log(result);
-  // });
 
   const startTime = Date.now();
   const apiUrl = `
@@ -167,6 +162,7 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
       let realResults = result.docs;
       // res.send(realResults)
       let toSend = [];
+      console.log("Testing ISBNs for real book covers. . .");
 
       for (let i = 0; i < realResults.length; i++) {
         if (realResults[i].pnx.addata.isbn) {
@@ -175,7 +171,7 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
           );
           // console.log("here1");
           if (tempEh.width > 1) {
-            console.log("cover image present");
+            // console.log("cover image present");
             toSend.push({
               isbn: realResults[i].pnx.addata.isbn,
               title: realResults[i].pnx.display.title,
@@ -188,33 +184,53 @@ https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,book&vid=
           }
         }
       }
-      console.log("Results length:", toSend.length);
+      console.log(
+        "Number of processed new books ready for export:",
+        toSend.length
+      );
       let ids = [];
       if (toSend.length > 0) {
-        toSend.forEach((book) => {
-          let processed = {
-            _type: "newBooks",
-            _id: book.isbn[0],
-            title: book.title[0],
-            sourcerecordid: book.sourcerecordid[0],
-            recordid: book.recordid[0],
-            isbn: book.isbn,
-            permalink: book.primoPermalink,
-            coverImageURL: book.coverImage,
-          };
-          queue.add(() => sanityClient.createIfNotExists(processed).then((res) => {
-            ids.push(res._id);
-            console.log(`New book was created, document ID is ${res._id}`);
-          }));
-          // sanityClient.create(processed).then((res) => {
-          //   ids.push(res._id);
-          //   console.log(`New book was created, document ID is ${res._id}`);
-          // });
-        });
-          const msElapsed = Date.now() - startTime;
-          console.log(`This all took ${msElapsed / 1000} seconds to complete.`);
-  
-        res.sendStatus(200).end();
+        /* 
+If we have results to send to Sanity lets clear out where they're going so it's as up-to-date as possible
+*/
+
+        console.log("Deleting newBooks from Sanity. . .");
+
+        sanityClient
+          .delete({ query: '*[_type == "newBooks"]' })
+          .then(() => {
+            console.log("The documents were deleted.");
+            console.log("Sending the new new books to Sanity.");
+               toSend.forEach((book, index, array) => {
+                 let processed = {
+                   _type: "newBooks",
+                   _id: book.isbn[0],
+                   title: book.title[0],
+                   sourcerecordid: book.sourcerecordid[0],
+                   recordid: book.recordid[0],
+                   isbn: book.isbn,
+                   permalink: book.primoPermalink,
+                   coverImageURL: book.coverImage,
+                 };
+                 queue.add(() => sanityClient.createIfNotExists(processed));
+                 // We use this to know when the q is populated and close the connection
+                 if (index === array.length - 1) {
+                   console.log("AH YES");
+                   const msElapsed = Date.now() - startTime;
+                   console.log(
+                     `This all took ${msElapsed / 1000} seconds to complete.`
+                   );
+                   res.send("Process complete.").end();
+                 }
+               });
+
+          })
+          .catch((err) => {
+            console.error("Delete failed: ", err.message);
+          });
+
+     
+        // res.sendStatus(200).end();
       } else res.send("Primo results empty so no data sent to Sanity.").end();
     });
   // res.send("Successful response.");
