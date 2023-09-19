@@ -43,7 +43,13 @@ app.get("/", (req, res) => {
   res.send("Choo Choo! Welcome to your Express app 🚅");
 });
 app.post("/interlibrary-loan-request", (req, res) => {
-  console.log(req.body);
+  console.log("POST Contents:", req.body);
+  if (req.body?.userDetails?.email){
+    console.log("Successful /interlibrary-loan-request POST");
+    res.status(200).end()}
+  else {
+    console.log("Failed /interlibrary-loan-request POST");
+    res.status(500).send({ error: "Request Failed. Please contact ill@rocky.edu" });}
 });
 
 const port = process.env.PORT || 3000;

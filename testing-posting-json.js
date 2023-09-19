@@ -9,7 +9,19 @@ import axios from "axios";
   // const axios = require("axios");
   // Prints "{ answer: 42 }"
   await axios.post("http://localhost:3001/interlibrary-loan-request", {
-    answer: 42,
+    userDetails: {
+      firstName: "a",
+      lastName: "a",
+      email: "",
+      borrowerType: "Student",
+    },
+    requestDetails: {
+      materialType: "Book",
+      bookTitle: "test!",
+      bookAuthor: "yay!",
+      bookISBN: "100",
+    },
+    additionalInformation: "Please work!!",
   });
 })()
 
