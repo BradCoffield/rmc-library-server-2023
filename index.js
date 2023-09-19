@@ -18,10 +18,10 @@ export const sanityClient = createClient({
 });
 
 // uses GROQ to query content: https://www.sanity.io/docs/groq
-export async function getEBooks() {
-  const posts = await sanityClient.fetch('*[_type == "ebook"]');
-  return posts;
-}
+// export async function getEBooks() {
+//   const posts = await sanityClient.fetch('*[_type == "ebook"]');
+//   return posts;
+// }
 
 // export async function createPost(post) {
 //   const result = sanityClient.create(post)
@@ -46,10 +46,10 @@ app.post("/interlibrary-loan-request", (req, res) => {
   console.log("POST Contents:", req.body);
   if (req.body?.userDetails?.email){
     console.log("Successful /interlibrary-loan-request POST");
-    res.status(200).end()}
+    res.status(200).send({success: "Request successful."}).end()}
   else {
     console.log("Failed /interlibrary-loan-request POST");
-    res.status(500).send({ error: "Request Failed. Please contact ill@rocky.edu" });}
+    res.status(500).send({ error: "Request failed. Please contact ill@rocky.edu" }).end();}
 });
 
 const port = process.env.PORT || 3000;
