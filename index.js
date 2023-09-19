@@ -2,11 +2,12 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import compression from "compression";
 import express from "express";
-// import probe from "probe-image-size";
 const app = express();
 app.use(compression());
+
 import { createClient } from "@sanity/client";
-// import PQueue from "p-queue";
+import cors from "cors"
+app.use(cors());
 
 export const sanityClient = createClient({
   projectId: "wzuhalz9",
@@ -41,11 +42,9 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("Choo Choo! Welcome to your Express app 🚅");
 });
-app.post("/interlibrary-loan-request", (req,res)=>{
-   console.log(req.body);
-})
-
-
+app.post("/interlibrary-loan-request", (req, res) => {
+  console.log(req.body);
+});
 
 const port = process.env.PORT || 3000;
 
