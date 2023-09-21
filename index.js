@@ -65,7 +65,8 @@ app.post("/interlibrary-loan-request", (req, res) => {
 const objectIterator = (object) => {
   let temp = ""
   Object.keys(object).forEach((i) => {
-    temp += `<li>${object[i]}</li>`;
+    if (object[i] === undefined || null || ""){}
+    else temp += `<li>${object[i].display}: ${object[i].value}</li>`;
   })
   return temp
 }
@@ -86,7 +87,7 @@ const objectIterator = (object) => {
       <ul>
         ${requestDeets}
       </ul>
-    <p></p>Additional Information (if applicable): ${addInfo}</p>
+    <p></p>Additional Information (if applicable): ${addInfo.value}</p>
 
 
     

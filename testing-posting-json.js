@@ -1,18 +1,18 @@
 import axios from "axios";
 const dataPackage = {
   userDetails: {
-    firstName: "a",
-    lastName: "a",
-    email: "a@a",
-    borrowerType: "Student",
+    firstName: { value: "aaa", display: "Chapter Author" },
+    lastName: { value: "aaa", display: "Chapter Author" },
+    email: { value: "aaa", display: "Chapter Author" },
+    borrowerType: { value: "aaa", display: "Chapter Author" },
   },
   requestDetails: {
-    materialType: "Book",
-    bookTitle: "test!",
-    bookAuthor: "yay!",
-    bookISBN: "100",
+    materialType: { value: "aaa", display: "Chapter Author" },
+    bookTitle: { value: "aaa", display: "Chapter Author" },
+    bookAuthor: { value: "aaa", display: "Chapter Author" },
+    bookISBN: { value: "aaa", display: "Chapter Author" },
   },
-  additionalInformation: "Please work!!",
+  additionalInformation: { value: "aaa", display: "Chapter Author" },
 };
 
 /* 
