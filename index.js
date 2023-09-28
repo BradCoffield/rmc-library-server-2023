@@ -7,6 +7,7 @@ app.use(compression());
 import cors from "cors";
 app.use(cors());
 import { sendTransactionalEmail } from "./brevo/send-transactional-email.mjs";
+import { sendInterlibraryLoanRequestToSanity } from "./sanity/send-interlibrary-request-data.mjs";
 
 // var defaultClient = Brevo.ApiClient.instance;
 // var apiKey = defaultClient.authentications["api-key"];
@@ -34,10 +35,26 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.send("Choo Choo! Welcome to your Express app 🚅");
+ 
 });
 
 app.post("/interlibrary-loan-request", (req, res) => {
     console.log("POST Contents:", req.body);
+    // const bookModel = {
+    //   _type: "interlibraryLoanRequest",
+    //   requestedMaterialType: "Book",
+    //   date: new Date().toLocaleDateString("en-CA"),
+    //   borrowerType: "Student",
+    //   requestedButUnfulfilled: false,
+    //   requestedBookDetails: {
+    //     ISBN: "100000",
+    //     bookAuthor: "test2222222",
+    //     bookTitle: "Test10000",
+    //   },
+    // };
+    // sanityClient.create(bookModel).then((res) => {
+    //   console.log(`Created, document ID is ${res._id}`);
+    // });
     sendTransactionalEmail(req, res)
 });
 
