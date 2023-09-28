@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 
 app.post("/interlibrary-loan-request", (req, res) => {
     console.log("POST Contents:", req.body);
-    sendTransactionalEmail(req)
+    sendTransactionalEmail(req, res)
 });
 
 const port = process.env.PORT || 3000;

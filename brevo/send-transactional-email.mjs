@@ -4,7 +4,7 @@ const apiKey = defaultClient.authentications["api-key"];
 apiKey.apiKey = process.env.BREVO_API_KEY;
 
 // addTwo.mjs
-function sendTransactionalEmail(req) {
+function sendTransactionalEmail(req, res) {
    if (req.body?.userDetails?.email) {
      console.log("SUCCESSFUL /interlibrary-loan-request POST");
      console.log("Beginning process to send email with Brevo");
