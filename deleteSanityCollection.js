@@ -12,13 +12,7 @@ const sanityClient = createClient({
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
-// uses GROQ to query content: https://www.sanity.io/docs/groq
-// async function getPosts() {
-//   const posts = await sanityClient.fetch('*[_type == "newBooks"]');
-//   console.log(posts)
-//   return posts;
-// }
-// getPosts()
+ 
 
 
 /* 
@@ -33,27 +27,19 @@ use GROQ to clear out all content from "new books" in sanity
 //   .catch((err) => {
 //     console.error('Delete failed: ', err.message)
 //   })
- 
- 
+
 
 /* 
-I don't remember why this is here.
+use GROQ to clear out all content from interlibrary loan requests in sanity
 */
 
-
-// result.forEach((book) => {
-
-// let processed = {
-//   _type: "newBooks",
-//   title: book.title[0],
-//   sourcerecordid: book.sourcerecordid[0],
-//   recordid: book.recordid[0],
-//   isbn: book.isbn,
-//   permalink: book.primoPermalink,
-//   coverImageURL: book.coverImage,
-// };
-// sanityClient.create(processed).then((res) => {
-//   console.log(`New book was created, document ID is ${res._id}`);
-// });
-
-// });
+// sanityClient
+//   .delete({ query: '*[_type == "interlibraryLoanRequest"]' })
+//   .then(() => {
+//     console.log("The documents were deleted.");
+//   })
+//   .catch((err) => {
+//     console.error("Delete failed: ", err.message);
+//   });
+ 
+  
