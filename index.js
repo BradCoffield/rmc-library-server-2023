@@ -1,3 +1,4 @@
+import { testAsync } from "./testing-things/test-async.mjs";
 import * as dotenv from "dotenv";
 dotenv.config();
 import compression from "compression";
@@ -24,6 +25,23 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("Choo Choo! Welcome to your Express app 🚅");
 });
+
+//testing async modules and how to def handle their errors
+
+app.get("/test-async", async (req, res,next) => {
+  try {
+    let someResults = await testAsync("1")
+    res.send(someResults);
+  } catch (error) {
+    console.log("I'm in the catch in index. halp.")
+    console.log(error);
+    //Next, you pass the error into an Express error handler with the next argument.
+    return next(error);
+  }
+});
+
+
+
 /* 
 TODO: make sure this is a POST whenever I'm done testing
 */
