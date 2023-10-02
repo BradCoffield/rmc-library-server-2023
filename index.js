@@ -46,55 +46,63 @@ app.get("/test-async", async (req, res,next) => {
 TODO: make sure this is a POST whenever I'm done testing
 */
 app.post("/interlibrary-loan-request", (req, res) => {
-  console.log("POST Contents:", req.body);
-  // const reqData = {
-  //   userDetails: {
-  //     firstName: {
-  //       value: "a",
-  //       display: "First Name",
-  //     },
-  //     lastName: {
-  //       value: "a",
-  //       display: "Last Name",
-  //     },
-  //     email: {
-  //       value: "a@a",
-  //       display: "Email",
-  //     },
-  //     borrowerType: {
-  //       value: "Student",
-  //       display: "Borrower Type",
-  //     },
-  //   },
-  //   requestDetails: {
-  //     materialType: {
-  //       value: "Book",
-  //       display: "Book",
-  //     },
-  //     bookTitle: {
-  //       value: "book title!11111",
-  //       display: "Book Title",
-  //     },
-  //     bookAuthor: {
-  //       value: "author shenanigans!111",
-  //       display: "Author",
-  //     },
-  //     bookISBN: {
-  //       value: "102030303011",
-  //       display: "ISBN",
-  //     },
-  //   },
-  //   additionalInformation: {
-  //     value: "asdfsdfsdfasdf111",
-  //     display: "Additional Information",
-  //   },
-  // };
-  sendInterlibraryLoanRequestToSanity(req.body)
+  // console.log("POST Contents:", req.body);
+  const reqData = {
+    userDetails: {
+      firstName: {
+        value: "a",
+        display: "First Name",
+      },
+      lastName: {
+        value: "a",
+        display: "Last Name",
+      },
+      email: {
+        value: "a@a",
+        display: "Email",
+      },
+      borrowerType: {
+        value: "Student",
+        display: "Borrower Type",
+      },
+    },
+    requestDetails: {
+      materialType: {
+        value: "Book",
+        display: "Book",
+      },
+      bookTitle: {
+        value: "book title!11111",
+        display: "Book Title",
+      },
+      bookAuthor: {
+        value: "author shenanigans!111",
+        display: "Author",
+      },
+      bookISBN: {
+        value: "102030303011",
+        display: "ISBN",
+      },
+    },
+    additionalInformation: {
+      value: "asdfsdfsdfasdf111",
+      display: "Additional Information",
+    },
+  };
+  sendInterlibraryLoanRequestToSanity(reqData)
+
 
   
 
  
   // sendTransactionalEmail(req, res)
+});
+app.use((err, req, res, next) => {
+  // Simple error handling here... in real life we might
+  // want to be more specific
+  console.log(`I'm the error handler. '${err.message}'`);
+  res.status(500);
+  res.json({ error: err.message });
 });
 
 const port = process.env.PORT || 3000;
