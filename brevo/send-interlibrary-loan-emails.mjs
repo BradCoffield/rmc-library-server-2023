@@ -74,7 +74,7 @@ console.log(destinationEmail, destinationPersonName);
       //    .status(500)
       //    .send({ error: "Request failed. Please contact ill@rocky.edu" })
       //    .end();
-  return error
+  // return error
     }
   );
 };

@@ -62,10 +62,9 @@ app.post("/interlibrary-loan-request", async (req, res) => {
   } catch (error) {
     console.log("I'm in the catch in index. halp.");
     console.log(error);
-    //Next, you pass the error into an Express error handler with the next argument.
-    res
+       res
       .status(500)
-      .send({ error: "Request failed. Please contact ill@rocky.edu" })
+      .send({ error: "Request failed... Please contact ill@rocky.edu" })
       .end();
     return next(error);
   }
