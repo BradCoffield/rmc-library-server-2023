@@ -11,9 +11,10 @@ export const sanityClient = createClient({
 });
 
 function sendInterlibraryLoanRequestToSanity(formData) {
-  console.log("yeee");
   const sendToSanity = (data) => {
+    console.log("Beginning process to send data to Sanity.");
     sanityClient.create(data).then((res) => {
+      
       console.log(`Created, document ID is ${res._id}`);
     });
     return;

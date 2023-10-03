@@ -7,13 +7,9 @@ const app = express();
 app.use(compression());
 import cors from "cors";
 app.use(cors());
-import { sendTransactionalEmail } from "./brevo/send-transactional-email.mjs";
+
+import { sendTransactionalEmail } from "./brevo/send-interlibrary-loan-emails.mjs";
 import { sendInterlibraryLoanRequestToSanity } from "./sanity/send-interlibrary-request-data-to-sanity.mjs";
-
-// var defaultClient = Brevo.ApiClient.instance;
-// var apiKey = defaultClient.authentications["api-key"];
-// apiKey.apiKey = process.env.BREVO_API_KEY;
-
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -28,74 +24,52 @@ app.get("/", (req, res) => {
 
 //testing async modules and how to def handle their errors
 
-app.get("/test-async", async (req, res,next) => {
+app.get("/test-async", async (req, res, next) => {
   try {
-    let someResults = await testAsync("1")
+    let someResults = await testAsync("1");
     res.send(someResults);
   } catch (error) {
-    console.log("I'm in the catch in index. halp.")
+    console.log("I'm in the catch in index. halp.");
     console.log(error);
     //Next, you pass the error into an Express error handler with the next argument.
     return next(error);
   }
 });
 
+app.post("/interlibrary-loan-request", async (req, res) => {
+  let requestData = req.body;
+  try {
+    const destinationEmail = requestData.userDetails.email.value;
+    const destinationPersonName =
+      requestData.userDetails.firstName.value +
+      "" +
+      requestData.userDetails.lastName.value;
 
+    sendInterlibraryLoanRequestToSanity(requestData);
 
-/* 
-TODO: make sure this is a POST whenever I'm done testing
-*/
-app.post("/interlibrary-loan-request", (req, res) => {
+    sendTransactionalEmail(
+      requestData,
+      destinationEmail,
+      destinationPersonName
+    );
+
+    // sendTransactionalEmail(
+    //   requestData,
+    //   "ill@rocky.edu",
+    //   "RMC Interlibrary Loan"
+    // );
+    res.status(200).end();
+  } catch (error) {
+    console.log("I'm in the catch in index. halp.");
+    console.log(error);
+    //Next, you pass the error into an Express error handler with the next argument.
+    res
+      .status(500)
+      .send({ error: "Request failed. Please contact ill@rocky.edu" })
+      .end();
+    return next(error);
+  }
   // console.log("POST Contents:", req.body);
-  const reqData = {
-    userDetails: {
-      firstName: {
-        value: "a",
-        display: "First Name",
-      },
-      lastName: {
-        value: "a",
-        display: "Last Name",
-      },
-      email: {
-        value: "a@a",
-        display: "Email",
-      },
-      borrowerType: {
-        value: "Student",
-        display: "Borrower Type",
-      },
-    },
-    requestDetails: {
-      materialType: {
-        value: "Book",
-        display: "Book",
-      },
-      bookTitle: {
-        value: "book title!11111",
-        display: "Book Title",
-      },
-      bookAuthor: {
-        value: "author shenanigans!111",
-        display: "Author",
-      },
-      bookISBN: {
-        value: "102030303011",
-        display: "ISBN",
-      },
-    },
-    additionalInformation: {
-      value: "asdfsdfsdfasdf111",
-      display: "Additional Information",
-    },
-  };
-  sendInterlibraryLoanRequestToSanity(reqData)
-
-
-  
-
- 
-  // sendTransactionalEmail(req, res)
 });
 app.use((err, req, res, next) => {
   // Simple error handling here... in real life we might
