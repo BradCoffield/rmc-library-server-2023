@@ -47,8 +47,8 @@ function sendInterlibraryLoanRequestToSanity(formData) {
         bookChapterBookTitle:
           formData?.requestDetails?.bookChapterBookTitle?.value,
         bookChapterISBN: formData?.requestDetails?.bookChapterISBN?.value,
-        bookChapterArticleTitle:
-          formData?.requestDetails?.bookChapterArticleTitle?.value,
+        bookChapterChapterTitle:
+          formData?.requestDetails?.bookChapterChapterTitle?.value,
         bookChapterAuthor: formData?.requestDetails?.bookChapterAuthor?.value,
       },
     };
