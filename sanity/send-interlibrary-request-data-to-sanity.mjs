@@ -33,6 +33,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
         bookAuthor: formData.requestDetails.bookAuthor.value,
         bookTitle: formData.requestDetails.bookTitle.value,
       },
+      additionalInformation:formData.additionalInformation
     };
     sendToSanity(bookModel);
   }
@@ -51,6 +52,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
           formData?.requestDetails?.bookChapterChapterTitle?.value,
         bookChapterAuthor: formData?.requestDetails?.bookChapterAuthor?.value,
       },
+      additionalInformation: formData.additionalInformation,
     };
     sendToSanity(bookChapterModel);
   }
@@ -72,6 +74,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
         journalArticleAuthor:
           formData?.requestDetails?.journalArticleAuthor?.value,
       },
+      additionalInformation: formData.additionalInformation,
     };
     sendToSanity(journalArticleModel);
   }
@@ -90,6 +93,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
           formData?.requestDetails?.dissertationThesisAdditionalInformation
             ?.value,
       },
+      additionalInformation: formData.additionalInformation,
     };
     sendToSanity(dissertationModel);
   }
@@ -103,6 +107,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
         otherRequestTypeInformation:
           formData?.requestDetails?.otherRequestTypeInformation?.value,
       },
+      additionalInformation: formData.additionalInformation,
     };
     sendToSanity(otherMaterialModel);
   }
