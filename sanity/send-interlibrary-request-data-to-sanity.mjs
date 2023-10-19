@@ -86,12 +86,11 @@ function sendInterlibraryLoanRequestToSanity(formData) {
       borrowerType: formData.userDetails.borrowerType.value,
       requestedDissertationThesisDetails: {
         dissertationThesisTitle:
-          formData?.requestDetails?.dissertationThesisTitle?.value,
+          formData?.requestDetails?.dissertationTitle?.value,
         dissertationThesisAuthor:
-          formData?.requestDetails?.dissertationThesisAuthor?.value,
+          formData?.requestDetails?.dissertationAuthor?.value,
         dissertationThesisAdditionalInformation:
-          formData?.requestDetails?.dissertationThesisAdditionalInformation
-            ?.value,
+          formData?.requestDetails?.dissertationAdditionalInfo?.value,
       },
       additionalInformation: formData.additionalInformation.value,
     };
