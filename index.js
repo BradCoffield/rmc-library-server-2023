@@ -53,11 +53,11 @@ app.post("/interlibrary-loan-request", async (req, res) => {
       destinationPersonName
     );
 
-    // sendTransactionalEmail(
-    //   requestData,
-    //   "ill@rocky.edu",
-    //   "RMC Interlibrary Loan"
-    // );
+    sendTransactionalEmail(
+      requestData,
+      "ill@rocky.edu",
+      "RMC Interlibrary Loan"
+    );
     res.status(200).end();
   } catch (error) {
     console.log("I'm in the catch in index. halp.");
