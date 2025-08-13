@@ -10,9 +10,4 @@ const testAsync = async (params) => {
   const info = await response.json();
   return info;
 };
-testAsync().catch((error) => {
-  console.log("I'm the catch inside the module");
-  error.message; // 'An error has occurred: 404'
-});
-
 export { testAsync };

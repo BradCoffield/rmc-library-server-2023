@@ -22,8 +22,16 @@ const sendTransactionalEmail = async (
   const objectIterator = (object) => {
     let temp = "";
     Object.keys(object).forEach((i) => {
-      if (object[i] === undefined || null || "") {
-      } else temp += `<li>${object[i].display}: ${object[i].value}</li>`;
+      const field = object[i];
+      if (
+        field &&
+        typeof field.display !== "undefined" &&
+        typeof field.value !== "undefined" &&
+        field.value !== null &&
+        field.value !== ""
+      ) {
+        temp += `<li>${field.display}: ${field.value}</li>`;
+      }
     });
     return temp;
   };
@@ -46,7 +54,7 @@ console.log(destinationEmail, destinationPersonName);
         ${requestDeets}
         <li>Additional Information (if applicable): ${addInfo.value}</li>
       </ul>
-   
+     
     </body></html>`;
   sendSmtpEmail.sender = {
     name: "RMC Library Interlibrary Loan",
@@ -58,25 +66,18 @@ console.log(destinationEmail, destinationPersonName);
     email: "ill@rocky.edu",
     name: "RMC Library Interlibrary Loan",
   };
-  //Actually send the email
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(
-    function (data) {
-      console.log(
-        "Brevo API called successfully. Returned data: " + JSON.stringify(data)
-      );
-
-      //  res.status(200).send({ success: "Request successful." }).end();
-    },
-    function (error) {
-      console.log("Failed sending transactional email.");
-      console.log(error);
-      //  res
-      //    .status(500)
-      //    .send({ error: "Request failed. Please contact ill@rocky.edu" })
-      //    .end();
-  // return error
-    }
-  );
+  // Actually send the email (awaitable for serverless)
+  try {
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(
+      "Brevo API called successfully. Returned data: " + JSON.stringify(data)
+    );
+    return data;
+  } catch (error) {
+    console.log("Failed sending transactional email.");
+    console.log(error);
+    throw error;
+  }
 };
  
 export { sendTransactionalEmail };
