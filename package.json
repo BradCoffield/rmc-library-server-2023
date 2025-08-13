@@ -10,8 +10,7 @@
   "author": "Brody Over",
   "license": "MIT",
   "scripts": {
-    "dev": "vercel dev",
-    "start": "vercel dev"
+    "vercel-dev": "vercel dev"
   },
   "devDependencies": {
     "@types/compression": "^1.7.3",
