@@ -10,14 +10,12 @@ export const sanityClient = createClient({
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
-function sendInterlibraryLoanRequestToSanity(formData) {
-  const sendToSanity = (data) => {
+async function sendInterlibraryLoanRequestToSanity(formData) {
+  const sendToSanity = async (data) => {
     console.log("Beginning process to send data to Sanity.");
-    sanityClient.create(data).then((res) => {
-      
-      console.log(`Created, document ID is ${res._id}`);
-    });
-    return;
+    const res = await sanityClient.create(data);
+    console.log(`Created, document ID is ${res._id}`);
+    return res;
   };
   //so i'll do this if statement for each possible material type and use the models I defined inside of them. I should pull out the sanityclient into its own thing and just call that function sending the data into it
   if (formData?.requestDetails?.materialType?.value === "Book") {
@@ -33,9 +31,9 @@ function sendInterlibraryLoanRequestToSanity(formData) {
         bookAuthor: formData.requestDetails.bookAuthor.value,
         bookTitle: formData.requestDetails.bookTitle.value,
       },
-      additionalInformation:formData.additionalInformation.value
+      additionalInformation: formData.additionalInformation.value,
     };
-    sendToSanity(bookModel);
+    return await sendToSanity(bookModel);
   }
 
   if (formData?.requestDetails?.materialType?.value === "BookChapter") {
@@ -54,7 +52,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
       },
       additionalInformation: formData.additionalInformation.value,
     };
-    sendToSanity(bookChapterModel);
+    return await sendToSanity(bookChapterModel);
   }
   if (formData?.requestDetails?.materialType?.value === "JournalArticle") {
     const journalArticleModel = {
@@ -76,7 +74,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
       },
       additionalInformation: formData.additionalInformation.value,
     };
-    sendToSanity(journalArticleModel);
+    return await sendToSanity(journalArticleModel);
   }
   if (formData?.requestDetails?.materialType?.value === "DissertationThesis") {
     const dissertationModel = {
@@ -94,7 +92,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
       },
       additionalInformation: formData.additionalInformation.value,
     };
-    sendToSanity(dissertationModel);
+    return await sendToSanity(dissertationModel);
   }
   if (formData?.requestDetails?.materialType?.value === "Other") {
     const otherMaterialModel = {
@@ -108,7 +106,7 @@ function sendInterlibraryLoanRequestToSanity(formData) {
       },
       additionalInformation: formData.additionalInformation.value,
     };
-    sendToSanity(otherMaterialModel);
+    return await sendToSanity(otherMaterialModel);
   }
 }
 

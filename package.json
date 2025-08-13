@@ -10,8 +10,8 @@
   "author": "Brody Over",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "vercel dev",
+    "start": "vercel dev"
   },
   "devDependencies": {
     "@types/compression": "^1.7.3",

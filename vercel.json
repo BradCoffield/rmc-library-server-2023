@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/api" },
+    { "source": "/interlibrary-loan-request", "destination": "/api/interlibrary-loan-request" },
+    { "source": "/test-async", "destination": "/api/test-async" }
+  ]
+}
